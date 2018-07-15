@@ -1,7 +1,8 @@
 # TM1638 Library
 This is tinyAVR (ATtiny13, ATtiny25, ATtiny45, ATtiny85, and other) library for LED controller modules based on TM1638 chip.
 
-[TM1638 Controller Module](docs/TM1638-Module-Key-Display.jpg)
+![alt text](docs/TM1638-Module-Key-Display.jpg "TM1638 Controller Module")
+
 
 Modules based on TM1638 provide three signal connections (CLK, STB and DIO) and two power connections (VCC and GND). Signal pins can be connected to any pair of digital pins of the AVR chip. Signal pins configuration is defined at the top of library header file, where it can be modifed.
 
