@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2018, Łukasz Marcin Podkalicki <lpodkalicki@gmail.com>
- * 
+ *
  * This is ATtiny13/25/45/85 library for TM1638 chip - LED driver controller with key-scan interface.
  *
  * Features:
@@ -32,12 +32,11 @@
 #define	TM1638_STB_HIGH()	(PORTB |= _BV(TM1638_STB_PIN))
 #define	TM1638_STB_LOW()	(PORTB &= ~_BV(TM1638_STB_PIN))
 
-
 static void TM1638_send_config(const uint8_t enable, const uint8_t brightness);
-static void TM1638_send_command(uint8_t value);
+static void TM1638_send_command(const uint8_t value);
 static void TM1638_write_byte(uint8_t value);
 static uint8_t TM1638_read_byte(void);
-static void TM1638_send_data(uint8_t address, uint8_t data);
+static void TM1638_send_data(const uint8_t address, const uint8_t data);
 
 static uint8_t _config = TM1638_SET_DISPLAY_ON | TM1638_MAX_BRIGHTNESS;
 PROGMEM const uint8_t _digit2segments[10] = {
@@ -59,7 +58,7 @@ TM1638_init(const uint8_t enable, const uint8_t brightness)
 	uint8_t i;
 
 	DDRB |= (_BV(TM1638_DIO_PIN) | _BV(TM1638_CLK_PIN) | _BV(TM1638_STB_PIN));
-	
+
 	TM1638_STB_HIGH();
 	TM1638_CLK_HIGH();
 
@@ -81,11 +80,11 @@ TM1638_enable(const uint8_t value)
 }
 
 void
-TM1638_set_brightness(const uint8_t brightness)
+TM1638_set_brightness(const uint8_t value)
 {
 
 	TM1638_send_config(_config & TM1638_SET_DISPLAY_ON,
-		brightness & TM1638_MAX_BRIGHTNESS);
+		value & TM1638_MAX_BRIGHTNESS);
 }
 
 void
@@ -109,7 +108,7 @@ void
 TM1638_display_digit(const uint8_t position, const uint8_t digit, const uint8_t dot)
 {
 
-	TM1638_display_segments(position, 
+	TM1638_display_segments(position,
 		(digit < 10 ? pgm_read_byte_near((uint8_t *)&_digit2segments + digit) : 0x00) |
 		(dot ? 0b10000000 : 0));
 }
@@ -149,7 +148,7 @@ TM1638_scan_keys(void)
 void
 TM1638_send_config(const uint8_t enable, const uint8_t brightness)
 {
-	
+
 	_config = (enable ? TM1638_SET_DISPLAY_ON : TM1638_SET_DISPLAY_OFF) |
 		(brightness > TM1638_MAX_BRIGHTNESS ? TM1638_MAX_BRIGHTNESS : brightness);
 
@@ -158,7 +157,7 @@ TM1638_send_config(const uint8_t enable, const uint8_t brightness)
 }
 
 void
-TM1638_send_command(uint8_t value)
+TM1638_send_command(const uint8_t value)
 {
 	TM1638_STB_LOW();
 	TM1638_write_byte(value);
@@ -179,12 +178,12 @@ TM1638_read_byte(void)
 			result |= 0x80;
 		}
 		result >>= 1;
-		TM1638_CLK_HIGH();		
+		TM1638_CLK_HIGH();
 	}
 
 	TM1638_DIO_OUTPUT();
 	TM1638_DIO_LOW();
-	
+
 	return result;
 }
 
@@ -207,12 +206,12 @@ TM1638_write_byte(uint8_t value)
 }
 
 void
-TM1638_send_data(uint8_t address, uint8_t data)
+TM1638_send_data(const uint8_t address, const uint8_t data)
 {
+
 	TM1638_send_command(TM1638_CMD_SET_DATA | TM1638_SET_DATA_F_ADDR);
   	TM1638_STB_LOW();
   	TM1638_write_byte(TM1638_CMD_SET_ADDR | address);
   	TM1638_write_byte(data);
 	TM1638_STB_HIGH();
 }
-

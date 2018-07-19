@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2018, Łukasz Marcin Podkalicki <lpodkalicki@gmail.com>
- * 
+ *
  * This is ATtiny13/25/45/85 library for TM1638 chip - LED driver controller with key-scan interface.
  *
  * Features:
@@ -56,10 +56,10 @@ void TM1638_init(const uint8_t enable, const uint8_t brightness);
 
 /**
  * Set display brightness.
- * Min brightness: 0
- * Max brightness: 7
+ * Min value: 0
+ * Max value: 7
  */
-void TM1638_set_brightness(const uint8_t brightness);
+void TM1638_set_brightness(const uint8_t value);
 
 /**
  * Turn display on/off.
@@ -69,13 +69,13 @@ void TM1638_enable(const uint8_t value);
 
 /**
  * Display raw segments at position (0x00..0x07)
- * 
- *      bits:     
- *        -- 0 -- 
+ *
+ *      bits:
+ *        -- 0 --
  *       |       |
  *       5       1
  *       |       |
- *        -- 6 -- 
+ *        -- 6 --
  *       |       |
  *       4       2
  *       |       |
@@ -95,13 +95,13 @@ void TM1638_clear_segments(void);
 
 /**
  * Display digit ('0'..'9') with optional dot at position (0x00..0x07)
- */ 
+ */
 void TM1638_display_digit(const uint8_t position, const uint8_t digit, const uint8_t dot);
 
 /**
  * Light LED at position (0x00..0x07)
  * value: 1 - on, 0 - off
- */ 
+ */
 void TM1638_set_led(const uint8_t position, const uint8_t value);
 
 /**
@@ -115,4 +115,3 @@ void TM1638_clear_leds(void);
 uint8_t TM1638_scan_keys(void);
 
 #endif	/* !_ATTINY_TM1638_H_ */
-

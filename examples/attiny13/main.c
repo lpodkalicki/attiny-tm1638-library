@@ -18,10 +18,10 @@ int
 main(void)
 {
 	uint8_t n = 0, k = 0, keys;
-	
+
 	/* setup */
 	TM1638_init(1/*enable*/, 3/*brighness*/);
-	
+
 	/* loop */
 	while (1) {
 		keys = scan_keys_demo();
@@ -41,7 +41,7 @@ uint8_t
 scan_keys_demo(void)
 {
 	uint8_t i, keys;
-	
+
 	keys = TM1638_scan_keys();
 	for (i = 0; i < 8; ++i) {
 		TM1638_set_led((i + 1) % 8, !!(keys & (1 << i)));
@@ -69,4 +69,3 @@ leds_demo(uint8_t n)
 		TM1638_set_led(i, !!((i + n) % 0x02));
 	}
 }
-
